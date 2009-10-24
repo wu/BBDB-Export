@@ -1,9 +1,8 @@
 package BBDB::Export::vCard;
 use strict;
+use warnings;
 
 our @ISA = qw(BBDB::Export);
-
-our $VERSION = do { my @r=(q$Revision: 0.2 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 use Data::Dumper;
 use Text::vFile::asData;
@@ -106,7 +105,7 @@ sub process_record
 
     $data->{'properties'}->{'end'} = [  { value => "vcard" } ];
 
-    my @lines = $self->generate_lines( $data );
+    my @lines = $self->_generate_lines( $data );
 
     my $return = join( "\n", @lines );
 
@@ -117,10 +116,9 @@ sub process_record
         $file = $dir . "/" . $file; 
         $file .= ".vcf";
         print "Writing file: $file\n";
-        open ( VCARD, ">$file" ) or die "Unable to write vcard: $file: $!";
-        print VCARD $return;
-        print VCARD "\n";
-        close ( VCARD ) or die "Error writing vcard: $file: $!";
+        open ( my $vcard_fh, ">", $file ) or die "Unable to write vcard: $file: $!";
+        print $vcard_fh $return, "\n";
+        close ( $vcard_fh ) or die "Error writing vcard: $file: $!";
     }
 
     return $return;
@@ -129,7 +127,7 @@ sub process_record
 #
 #_* Text::vFile::asData::generate_lines needs a little work
 #
-sub generate_lines
+sub _generate_lines
 {
     my ( $self, $data ) = @_;
 

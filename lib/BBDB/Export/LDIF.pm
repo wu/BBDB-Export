@@ -2,6 +2,8 @@ package BBDB::Export::LDIF;
 use strict;
 use warnings;
 
+our $VERSION;
+
 our @ISA = qw(BBDB::Export);
 
 use Data::Dumper;

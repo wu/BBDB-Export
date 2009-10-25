@@ -2,11 +2,7 @@ package BBDB::Export;
 use strict;
 use warnings;
 
-#
-#_* Version
-#
-
-our $VERSION = '0.013';
+our $VERSION;
 
 #
 #_* Config
